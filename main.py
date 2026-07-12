@@ -5,7 +5,7 @@ import musicLibrary
 from models.ai_assistant import ask_ai
 
 
-recognizer = sr.Recognizer()
+r = sr.Recognizer()
 # engine = pyttsx3.init()
 
 
@@ -44,24 +44,26 @@ def processCommand(c):
 if __name__ == "__main__":
     speak("Initializing jarvis")
     while True:
-        # obtain audio from the microphone
-        r = sr.Recognizer()
-
-        # recognize speech using google
-        print("recognizing...")
+        print("Listening...")
         try:
             with sr.Microphone() as source:
-                print("Listening...")
+                r.adjust_for_ambient_noise(source, duration=0.5)
                 audio = r.listen(source, timeout=5, phrase_time_limit=5)
-            word = r.recognize_google(audio)
-            if (word.lower() == "jarvis"):
-                speak("Yeah")
+            
+            text = r.recognize_google(audio)
+            print(f"You said: {text}")
+            
+            if "jarvis" in text.lower():
+                speak("Yes?")
+                
                 with sr.Microphone() as source:
-                    print("Jarvis Active...")
                     audio = r.listen(source)
-                    command = r.recognize_google(audio)
+                command = r.recognize_google(audio)
+                print(f"Command: {command}")
+                
+                speak("Thinking...")
 
-                    processCommand(command)
+                processCommand(command)
 
         except Exception as e:
             print("Error; {0}".format(e))
