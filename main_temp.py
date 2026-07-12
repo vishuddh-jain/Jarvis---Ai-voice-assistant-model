@@ -80,8 +80,7 @@ def processCommand(c):
         song = c.lower().split(" ")[1]
         link = musicLibrary.music[song]
         webbrowser.open(link)
-    elif c.lower().startswith("fuck"):
-        speak("thankyou buddy")
+    
 
     # AI fallback (MOST IMPORTANT)
     else:
